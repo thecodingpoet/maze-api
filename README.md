@@ -1,24 +1,32 @@
-# README
+# BACKEND API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Installation
 
-Things you may want to cover:
+Follow these easy steps to install and start the app:
 
-* Ruby version
+### Pre-requisites
+- Ruby >= 2.5.1
+- Ruby on Rails >= 5.2.3
+- PostgreSQL
 
-* System dependencies
+### Set up Rails app
 
-* Configuration
+First, install the gems required by the application:
 
-* Database creation
+  bundle
 
-* Database initialization
+Next, execute the database migrations/schema setup:
 
-* How to run the test suite
+	bundle exec rails db:setup
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+### Start the app
 
-* ...
+Start the Rails app to see the application:
+
+    bundle exec rails server
+
+You can find your app now by pointing your browser to [http://localhost:3000](http://localhost:3000)
+
+### Running specs
+    bundle exec rspec
