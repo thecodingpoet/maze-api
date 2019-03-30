@@ -4,6 +4,9 @@ class User < ApplicationRecord
                     uniqueness: true,
                     format: { with: /@/ },
                     case_sensitive: false
+  validates :avatar, presence: true 
+  validates :username, presence: true
+  validates :birth_year, presence: true
 
   before_save :downcase_email
 
