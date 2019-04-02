@@ -27,9 +27,11 @@ module Api
         params.require(:user).permit(:email,
                                      :password,
                                      :password_confirmation,
-                                     :avatar, :username,
+                                     :avatar, 
+                                     :username,
                                      :gender,
-                                     :birth_year)
+                                     :birth_year,
+                                     interests_attributes: [:name, :type])
       end
 
     end
