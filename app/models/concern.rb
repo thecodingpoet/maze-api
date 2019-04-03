@@ -1,0 +1,2 @@
+class Concern < Interest
+end

@@ -21,7 +21,26 @@ module Api
         end
       end
 
+      def show       
+        user = User.where(id: params[:id]).left_outer_joins(:interests).distinct
+        render json: serializer.new(user, include: [:interests])
+      end
+
+      def update
+        user = User.find(params[:id])
+
+        if user.update(user_params) 
+          render status: :no_content
+        else
+          render json: { error: user.errors.full_messages }, status: :bad_request
+        end
+      end
+
       private
+
+      def serializer
+        UserSerializer
+      end
 
       def user_params
         params.require(:user).permit(:email,
