@@ -1,2 +1,3 @@
-class Strength < Interest
+class Strength < ApplicationRecord
+  belongs_to :user
 end

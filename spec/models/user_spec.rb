@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   subject { build(:user) }
-  it { should have_many(:interests) }
+  it { should have_many(:strengths) }
+  it { should have_many(:concerns) }
   it { should validate_presence_of(:email) }
   it { should validate_uniqueness_of(:email) }
   it { should allow_value('tom@example.com').for(:email) }

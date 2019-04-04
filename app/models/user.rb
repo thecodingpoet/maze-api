@@ -1,7 +1,8 @@
 class User < ApplicationRecord
   has_secure_password
-  has_many :interests
-  accepts_nested_attributes_for :interests
+  has_many :strengths
+  has_many :concerns
+  accepts_nested_attributes_for :strengths, :concerns
 
   validates :email, presence: true,
                     uniqueness: true,

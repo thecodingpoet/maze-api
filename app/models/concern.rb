@@ -1,2 +1,3 @@
-class Concern < Interest
+class Concern < ApplicationRecord
+  belongs_to :user
 end

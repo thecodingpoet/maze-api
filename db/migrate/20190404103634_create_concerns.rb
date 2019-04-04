@@ -1,8 +1,7 @@
-class CreateInterests < ActiveRecord::Migration[5.1]
+class CreateConcerns < ActiveRecord::Migration[5.1]
   def change
-    create_table :interests do |t|
+    create_table :concerns do |t|
       t.string :name
-      t.string :type
       t.boolean :selected, null: false
       t.references :user, foreign_key: true
 
