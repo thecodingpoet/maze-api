@@ -41,7 +41,11 @@ module Api
       private
 
       def check_authorized
-        return invalid_authentication unless @current_user.id == params[:id].to_i 
+        return invalid_authentication unless authorized?
+      end
+
+      def authorized?
+        @current_user.id == params[:id].to_i 
       end
 
       def serializer
