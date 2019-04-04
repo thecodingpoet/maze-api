@@ -4,7 +4,7 @@ module Api
       skip_before_action :authenticate_request!, only: [:create, :login] 
       before_action :check_authorized, except: [:create, :login]
 
-      def create
+      def signup
         user = User.new(user_params)
         if user.save
           token = JsonWebToken.encode(user_id: user.id)
