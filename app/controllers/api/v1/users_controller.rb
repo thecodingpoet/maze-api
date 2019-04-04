@@ -1,6 +1,8 @@
 module Api
   module V1
     class UsersController < ApplicationController
+      skip_before_action :authenticate_request!, only: [:create, :login] 
+
       def create
         user = User.new(user_params)
         if user.save
@@ -21,14 +23,15 @@ module Api
         end
       end
 
-      def show       
+      def show   
+        return invalid_authentication unless @current_user.id == params[:id].to_i    
         user = User.where(id: params[:id]).left_outer_joins(:interests).distinct
-        render json: serializer.new(user, include: [:interests])
+        render json: serializer.new(user, include: [:interests]), status: :ok
       end
 
       def update
+        return invalid_authentication unless @current_user.id == params[:id].to_i 
         user = User.find(params[:id])
-
         if user.update(user_params) 
           render status: :no_content
         else
@@ -50,7 +53,7 @@ module Api
                                      :username,
                                      :gender,
                                      :birth_year,
-                                     interests_attributes: [:name, :type])
+                                     interests_attributes: [:id, :name, :selected, :type])
       end
 
     end

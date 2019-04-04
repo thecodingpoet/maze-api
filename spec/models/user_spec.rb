@@ -9,5 +9,6 @@ RSpec.describe User, type: :model do
   it { should_not allow_value("test.com").for(:email) }
   it { should validate_presence_of(:avatar) }
   it { should validate_presence_of(:username) }
+  it { should validate_uniqueness_of(:username) }
   it { should validate_presence_of(:birth_year) }
 end

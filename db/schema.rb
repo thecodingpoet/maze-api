@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20190401143156) do
   create_table "interests", force: :cascade do |t|
     t.string "name"
     t.string "type"
+    t.boolean "selected", null: false
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
