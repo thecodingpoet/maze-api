@@ -86,4 +86,57 @@ RSpec.describe Api::V1::UsersController, type: :request do
       end
     end
   end
+
+  describe 'GET #show' do
+    let(:user) { create(:user) }
+    context 'When user is authorized' do 
+      before { get "/api/v1/users/#{user.id}", headers: valid_headers }
+
+      it 'returns the user details' do  
+        json = JSON.parse(response.body)
+        expect(json['data']).not_to be_empty
+      end
+    end
+
+    context 'When user is not authorized' do 
+      before { get "/api/v1/users/#{user.id + 1}", headers: valid_headers }
+
+      it 'returns an error message' do
+        json = JSON.parse(response.body)
+        expect(json['error']).to match(/Invalid Request/)
+      end
+
+      it 'returns an unauthorized status code' do   
+        expect(response).to have_http_status(401)
+      end
+    end
+  end
+
+  describe  'PUT #update' do
+    let!(:user) { create(:user_with_interests) }
+    let(:valid_user) do
+      attributes_for(:user, username: "#{user.username}_test", strengths_attributes: user.strengths, concerns_attributes: user.concerns)
+    end
+
+    context 'When user is authorized' do 
+      before { put "/api/v1/users/#{user.id}", params: { user: valid_user }.to_json, headers: valid_headers }
+
+      it 'updates the user details' do  
+        expect(response).to have_http_status(204)
+      end
+    end
+
+    context 'When user is not authorized' do 
+      before { put "/api/v1/users/#{user.id + 1}", headers: valid_headers }
+
+      it 'returns an error message' do
+        json = JSON.parse(response.body)
+        expect(json['error']).to match(/Invalid Request/)
+      end
+
+      it 'returns an unauthorized status code' do   
+        expect(response).to have_http_status(401)
+      end
+    end
+  end
 end
