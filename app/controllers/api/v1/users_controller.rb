@@ -1,8 +1,8 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      skip_before_action :authenticate_request!, only: [:create, :login] 
-      before_action :check_authorized, except: [:create, :login]
+      skip_before_action :authenticate_request!, only: [:login, :signup] 
+      before_action :check_authorized, except: [:login, :signup]
 
       def signup
         user = User.new(user_params)
