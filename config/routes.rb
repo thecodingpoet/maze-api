@@ -4,6 +4,8 @@ Rails.application.routes.draw do
     namespace 'v1' do
       post '/signup', to: 'users#create'
       post '/login', to: 'users#login'
+      get '/user', to: 'users#show'
+      put '/user', to: 'users#update'
       resources :users, only: [:update, :show] 
     end
   end

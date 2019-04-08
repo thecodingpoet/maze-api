@@ -4,6 +4,7 @@ FactoryBot.define do
     username { Faker::Internet.username }
     gender { Faker::Gender.binary_type }
     email { Faker::Internet.email }
+    education { Faker::University.name }
     password { "Password" }
     birth_year { Faker::Number.number(4) }
 

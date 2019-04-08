@@ -10,6 +10,7 @@ class User < ApplicationRecord
                     case_sensitive: false
   validates :avatar, presence: true 
   validates :birth_year, presence: true
+  validates :education, presence: true
   validates :username, presence: true,
                        uniqueness: true
 

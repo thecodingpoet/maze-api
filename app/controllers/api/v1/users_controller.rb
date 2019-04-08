@@ -2,7 +2,7 @@ module Api
   module V1
     class UsersController < ApplicationController
       skip_before_action :authenticate_request!, only: [:login, :create] 
-      before_action :check_authorized, except: [:login, :create]
+      before_action :check_authorized, only: [:update]
 
       def create
         user = User.new(user_params)
@@ -24,13 +24,13 @@ module Api
         end
       end
 
-      def show   
-        user = User.where(id: params[:id]).left_outer_joins(:strengths, :concerns).distinct
+      def show  
+        user = User.where(id: user_id).left_outer_joins(:strengths, :concerns).distinct
         render json: serializer.new(user, include: [:strengths, :concerns]), status: :ok
       end
 
       def update
-        user = User.find(params[:id])
+        user = User.find(user_id)
         if user.update(user_params) 
           render status: :no_content
         else
@@ -44,8 +44,13 @@ module Api
         return invalid_authentication unless authorized?
       end
 
+      def user_id 
+        params[:id] || @current_user.id
+      end
+
       def authorized?
-        @current_user.id == params[:id].to_i 
+        return true if params[:id].nil?
+        params[:id].to_i == @current_user.id 
       end
 
       def serializer
@@ -58,6 +63,7 @@ module Api
                                      :password_confirmation,
                                      :avatar, 
                                      :username,
+                                     :education,
                                      :gender,
                                      :birth_year,
                                      strengths_attributes: [:id, :name, :selected],
