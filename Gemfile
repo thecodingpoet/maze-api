@@ -38,6 +38,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'factory_bot_rails'
   gem 'rubocop', require: false
+  gem 'rubocop-rspec'
   gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
 end
 
