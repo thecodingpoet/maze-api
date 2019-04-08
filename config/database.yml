@@ -80,6 +80,5 @@ test:
 #
 production:
   <<: *default
-  database: backend-api_production
-  username: backend-api
-  password: <%= ENV['BACKEND-API_DATABASE_PASSWORD'] %>
+  database: <%= ENV['POSTGRES_DB'] %>
+  url: <%= ENV['DATABASE_URL'] %>
