@@ -12,7 +12,7 @@ RSpec.describe Api::V1::UsersController, type: :request do
     end
 
     context 'When request is valid' do 
-      before { post '/api/v1/users', params: { user: valid_attributes }.to_json, headers: headers }
+      before { post '/api/v1/signup', params: { user: valid_attributes }.to_json, headers: headers }
 
       it 'creates new user' do
         expect(response).to have_http_status(201)
@@ -30,7 +30,7 @@ RSpec.describe Api::V1::UsersController, type: :request do
     end
 
     context 'When request is invalid' do
-      before { post '/api/v1/users', params: { user: invalid_attributes }.to_json, headers: headers }
+      before { post '/api/v1/signup', params: { user: invalid_attributes }.to_json, headers: headers }
 
       it 'does not create a new user' do   
         expect(response).to have_http_status(400)
@@ -64,7 +64,7 @@ RSpec.describe Api::V1::UsersController, type: :request do
     end
 
     context 'When request is valid' do 
-      before { post '/api/v1/users/login', params: valid_credentials, headers: headers }
+      before { post '/api/v1/login', params: valid_credentials, headers: headers }
 
       it 'returns an authenticated token' do
         json = JSON.parse(response.body)
@@ -78,7 +78,7 @@ RSpec.describe Api::V1::UsersController, type: :request do
     end
 
     context 'When request is invalid' do
-      before { post '/api/v1/users/login', params: invalid_credentials, headers: headers }
+      before { post '/api/v1/login', params: invalid_credentials, headers: headers }
 
       it 'returns an error message' do
         json = JSON.parse(response.body)
@@ -89,7 +89,7 @@ RSpec.describe Api::V1::UsersController, type: :request do
 
   describe 'GET #show' do
     let(:user) { create(:user) }
-    context 'When user is authorized' do 
+    context 'When user exists' do 
       before { get "/api/v1/users/#{user.id}", headers: valid_headers }
 
       it 'returns the user details' do  
@@ -98,16 +98,12 @@ RSpec.describe Api::V1::UsersController, type: :request do
       end
     end
 
-    context 'When user is not authorized' do 
+    context 'When user does not exist' do 
       before { get "/api/v1/users/#{user.id + 1}", headers: valid_headers }
 
-      it 'returns an error message' do
+      it 'does not return the user details' do  
         json = JSON.parse(response.body)
-        expect(json['error']).to match(/Invalid Request/)
-      end
-
-      it 'returns an unauthorized status code' do   
-        expect(response).to have_http_status(401)
+        expect(json['data']).to be_empty
       end
     end
   end
