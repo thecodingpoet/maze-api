@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe WritingsController, type: :controller do
+RSpec.describe Api::V1::WritingsController, type: :controller do
 
 end
