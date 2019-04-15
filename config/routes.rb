@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       post '/login', to: 'users#login'
       get '/user', to: 'users#show'
       put '/user', to: 'users#update'
+      resources :writings
       resources :users, only: [:update, :show] 
     end
   end
