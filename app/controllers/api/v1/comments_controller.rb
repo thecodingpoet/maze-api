@@ -1,8 +1,10 @@
 module Api
   module V1
     class CommentsController < ApplicationController
+      before_action :find_writing, only: [:create]
+
       def create 
-        comment = writing.comments.new(comment_params)
+        comment = @writing.comments.new(comment_params)
         comment.user = @current_user
 
         if comment.save 
@@ -14,8 +16,8 @@ module Api
 
       private 
 
-      def writing 
-        Writing.find(params[:writing_id])
+      def find_writing 
+        @writing = Writing.find(params[:writing_id])
       end
 
       def comment_params
