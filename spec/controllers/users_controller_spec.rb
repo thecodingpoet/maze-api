@@ -103,7 +103,7 @@ RSpec.describe Api::V1::UsersController, type: :request do
 
       it 'does not return the user details' do  
         json = JSON.parse(response.body)
-        expect(json['data']).to be_empty
+        expect(json['data']).to be_nil
       end
     end
   end
