@@ -25,7 +25,7 @@ module Api
       end
 
       def show  
-        user = User.where(id: user_id).left_outer_joins(:strengths, :concerns).distinct
+        user = User.where(id: user_id).left_outer_joins(:strengths, :concerns).first
         render json: serializer.new(user, include: [:strengths, :concerns]), status: :ok
       end
 
