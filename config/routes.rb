@@ -7,7 +7,12 @@ Rails.application.routes.draw do
       get '/user', to: 'users#show'
       put '/user', to: 'users#update'
       resources :writings do
-        resources :comments, only: [:create]
+        resources :comments, only: [:create] do
+          member do
+            put '/accept', to: 'comments#accept'
+            put '/decline', to: 'comments#decline'
+          end
+        end
       end
       resources :users, only: [:update, :show] 
     end

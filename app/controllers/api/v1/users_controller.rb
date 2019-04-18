@@ -2,7 +2,7 @@ module Api
   module V1
     class UsersController < ApplicationController
       skip_before_action :authenticate_request!, only: [:login, :create] 
-      before_action :check_authorized, only: [:update]
+      before_action :check_user_authorized, only: [:update]
 
       def create
         user = User.new(user_params)
@@ -40,7 +40,7 @@ module Api
 
       private
 
-      def check_authorized
+      def check_user_authorized
         return invalid_authentication unless authorized?
       end
 

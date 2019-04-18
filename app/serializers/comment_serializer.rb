@@ -1,6 +1,6 @@
 class CommentSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :content, :created_at
+  attributes :content, :created_at, :approved
   attributes :user do |comment|
     {
       username: comment.user.username,
