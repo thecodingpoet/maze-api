@@ -14,7 +14,11 @@ Rails.application.routes.draw do
           end
         end
       end
-      resources :users, only: [:update, :show] 
+      resources :users, only: [:update, :show] do
+        member do
+          post 'favorite'
+        end
+      end
     end
   end
   root 'home#index'

@@ -3,6 +3,7 @@ module Api
     class UsersController < ApplicationController
       skip_before_action :authenticate_request!, only: [:login, :create] 
       before_action :check_user_authorized, only: [:update]
+      before_action :find_user, only: [:update]
 
       def create
         user = User.new(user_params)
@@ -30,15 +31,24 @@ module Api
       end
 
       def update
-        user = User.find(user_id)
-        if user.update(user_params) 
+        if @user.update(user_params) 
           render status: :no_content
         else
           render json: { error: user.errors.full_messages }, status: :bad_request
         end
       end
 
+      def favorite 
+        user = User.find(params[:id])
+        @current_user.follow(user)
+        render json: favorites, status: :ok
+      end
+
       private
+
+      def find_user 
+        @user = User.find(user_id)
+      end
 
       def check_user_authorized
         return invalid_authentication unless authorized?
