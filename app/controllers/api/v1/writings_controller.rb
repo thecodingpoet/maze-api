@@ -3,6 +3,11 @@ module Api
     class WritingsController < ApplicationController
       before_action :find_writing, only: [:show]
 
+      def index
+        writings = Writing.limit(10)
+        render json: serializer.new(writings), status: :ok
+      end
+
       def create 
         writing = @current_user.writings.new(writing_params)
         if writing.save 
