@@ -4,7 +4,7 @@ module Api
       before_action :find_writing, only: [:show]
 
       def index
-        writings = Writing.limit(5).left_outer_joins(:user, :comments).distinct
+        writings = Writing.order('created_at DESC').limit(5).left_outer_joins(:user, :comments).distinct
         render json: serializer.new(writings, include: [:user, :comments]), status: :ok
       end
 
@@ -21,7 +21,7 @@ module Api
         render json: serializer.new(@writing, include: [:user, :comments]), status: :ok
       end
 
-      private 
+      private
 
       def serializer
         WritingSerializer
