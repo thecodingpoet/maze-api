@@ -11,7 +11,7 @@ module Api
           token = JsonWebToken.encode(user_id: user.id)
           render json: { message: 'User created successfully', token: token }, status: :created
         else
-          render json: { errors: user.errors.full_messages }, status: :bad_request
+          render json: { errors: user.errors.messages }, status: :bad_request
         end
       end
 
