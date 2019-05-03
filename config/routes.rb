@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       get '/user', to: 'users#show'
       put '/user', to: 'users#update'
       get '/timeline', to: 'writings#timeline'
+      get '/supports', to: 'writings#support'
   
       resources :writings do
         member do
@@ -15,7 +16,6 @@ Rails.application.routes.draw do
         end
         collection do 
           get '/saved', to: 'writings#saved'
-          get '/support', to: 'writings#support'
           post '/save', to: 'writings#save'
         end
         resources :comments, only: [:create] do
