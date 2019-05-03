@@ -4,6 +4,7 @@ module Api
       before_action :find_writing
       before_action :find_comment, except: [:create]
       before_action :check_user_authorized, except: [:create]
+      before_action :check_thread_active
 
       def create 
         comment = @writing.comments.new(comment_params)
@@ -30,6 +31,10 @@ module Api
 
       def check_user_authorized 
         return invalid_authentication unless authorized?  
+      end
+
+      def check_thread_active
+        return render json: { errors: { base: 'Thread is closed' } }, status: :bad_request if @writing.archived?
       end
 
       def authorized?
