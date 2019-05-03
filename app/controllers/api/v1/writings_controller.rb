@@ -4,7 +4,12 @@ module Api
       before_action :find_writing, only: [:show, :share, :archive]
 
       def index
-        writings = Writing.left_outer_joins(:user, :comments).order('created_at DESC').limit(5)
+        writings = @current_user.writings.order('created_at DESC')
+        render json: serializer.new(writings, include: [:user, :comments]), status: :ok
+      end
+
+      def timeline 
+        writings = Writing.order('created_at DESC').limit(5)
         render json: serializer.new(writings, include: [:user, :comments]), status: :ok
       end
 
@@ -48,6 +53,11 @@ module Api
 
       def saved
         writings = @current_user.writings.draft
+        render json: serializer.new(writings, include: [:user, :comments]), status: :ok
+      end
+
+      def support 
+        writings = Writing.joins(:comments).where(:comments => {user_id: @current_user.id})
         render json: serializer.new(writings, include: [:user, :comments]), status: :ok
       end
 
