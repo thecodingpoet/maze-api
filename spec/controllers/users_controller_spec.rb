@@ -82,7 +82,7 @@ RSpec.describe Api::V1::UsersController, type: :request do
 
       it 'returns an error message' do
         json = JSON.parse(response.body)
-        expect(json['error']).to match(/Invalid username or password/)
+        expect(json['errors']['base']).to match(/Invalid username or password/)
       end
     end
   end
@@ -127,7 +127,7 @@ RSpec.describe Api::V1::UsersController, type: :request do
 
       it 'returns an error message' do
         json = JSON.parse(response.body)
-        expect(json['error']).to match(/Invalid Request/)
+        expect(json['errors']['base']).to match(/Invalid Request/)
       end
 
       it 'returns an unauthorized status code' do   
