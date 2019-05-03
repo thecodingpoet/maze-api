@@ -57,10 +57,6 @@ module Api
         WritingSerializer
       end
 
-      def error_message
-        render json: { error: "Writing is not a draft" }, status: :unprocessable_entity
-      end
-
       def find_writing 
         @writing = Writing.find(params[:id])
       end

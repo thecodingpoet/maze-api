@@ -21,7 +21,7 @@ module Api
           token = JsonWebToken.encode(user_id: user.id)
           render json: { message: 'User logged in successfully', token: token }, status: :ok
         else
-          render json: { error: 'Invalid username or password' }, status: :unauthorized
+          render json: { errors: { base: 'Invalid username or password'} }, status: :unauthorized
         end
       end
 
@@ -34,7 +34,7 @@ module Api
         if @user.update(user_params) 
           render status: :no_content
         else
-          render json: { error: user.errors.full_messages }, status: :bad_request
+          render json: { errors: user.errors.full_messages }, status: :bad_request
         end
       end
 
