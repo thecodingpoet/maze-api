@@ -6,7 +6,13 @@ Rails.application.routes.draw do
       post '/login', to: 'users#login'
       get '/user', to: 'users#show'
       put '/user', to: 'users#update'
+      post 'writings/save', to: 'writings#save'
+      get 'writings/saved', to: 'writings#saved'
       resources :writings do
+        member do
+          put '/share', to: 'writings#share'
+          patch '/archive', to: 'writings#archive'
+        end
         resources :comments, only: [:create] do
           member do
             put '/accept', to: 'comments#accept'
