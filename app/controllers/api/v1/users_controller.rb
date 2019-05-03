@@ -34,7 +34,7 @@ module Api
         if @user.update(user_params) 
           render status: :no_content
         else
-          render json: { errors: user.errors.full_messages }, status: :bad_request
+          render json: { errors: user.errors.messages }, status: :bad_request
         end
       end
 

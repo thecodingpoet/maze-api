@@ -18,7 +18,7 @@ module Api
         if writing.save 
           render json: { message: 'Writing created successfully' }, status: :ok
         else 
-          render json: { errors: writing.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: writing.errors.messages }, status: :unprocessable_entity
         end
       end
 
@@ -28,7 +28,7 @@ module Api
         if !@writing.errors && @writing.update(writing_params)
           render status: :no_content
         else
-          render json: { errors: @writing.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: @writing.errors.messages }, status: :unprocessable_entity
         end
       end
 
@@ -38,7 +38,7 @@ module Api
         if writing.save 
           render json: { message: 'Writing saved successfully' }, status: :ok
         else 
-          render json: { errors: writing.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: writing.errors.messages }, status: :unprocessable_entity
         end
       end
 

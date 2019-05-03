@@ -12,7 +12,7 @@ module Api
         if comment.save 
           render json: { message: 'Comment created successfully' }, status: :ok
         else 
-          render json: { errors: comment.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: comment.errors.messages }, status: :unprocessable_entity
         end
       end
 
