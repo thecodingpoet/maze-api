@@ -13,7 +13,7 @@ Rails.application.routes.draw do
         member do
           patch '/archive', to: 'writings#archive'
           put '/drafts', to: 'writings#update_draft'
-          patch '/drafts/publish', to: 'writings#publish_draft'
+          put '/drafts/publish', to: 'writings#publish_draft'
         end
         collection do 
           get '/drafts', to: 'writings#drafts'
