@@ -1,7 +1,7 @@
 module Api
   module V1
     class WritingsController < ApplicationController
-      before_action :find_writing, only: [:show, :share, :archive]
+      before_action :find_writing, only: [:show, :update_draft, :publish_draft, :archive]
       before_action :check_draft, only: [:update_draft, :publish_draft]
 
       def index
