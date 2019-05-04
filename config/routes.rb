@@ -11,12 +11,13 @@ Rails.application.routes.draw do
   
       resources :writings do
         member do
-          put '/share', to: 'writings#share'
           patch '/archive', to: 'writings#archive'
+          put '/drafts', to: 'writings#update_draft'
+          patch '/drafts/publish', to: 'writings#publish_draft'
         end
         collection do 
-          get '/saved', to: 'writings#saved'
-          post '/save', to: 'writings#save'
+          get '/drafts', to: 'writings#drafts'
+          post '/drafts', to: 'writings#save_draft'
         end
         resources :comments, only: [:create] do
           member do

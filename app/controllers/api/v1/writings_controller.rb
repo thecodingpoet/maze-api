@@ -2,6 +2,7 @@ module Api
   module V1
     class WritingsController < ApplicationController
       before_action :find_writing, only: [:show, :share, :archive]
+      before_action :check_draft, only: [:update_draft, :publish_draft]
 
       def index
         writings = @current_user.writings.order('created_at DESC')
@@ -22,17 +23,24 @@ module Api
         end
       end
 
-      def share
-        @writing.errors.add(:base, "Writing is not a draft") unless @writing.draft?
-        @writing.status = "shared"
-        if !@writing.errors && @writing.update(writing_params)
+      def update_draft
+        if @writing.update(writing_params)
           render status: :no_content
         else
           render json: { errors: @writing.errors.messages }, status: :unprocessable_entity
         end
       end
 
-      def save 
+      def publish_draft
+        @writing.status = "shared"
+        if @writing.update(writing_params)
+          render json: { message: 'Writing has been published' }, status: :ok
+        else
+          render json: { errors: @writing.errors.messages }, status: :unprocessable_entity
+        end
+      end
+
+      def save_draft
         writing = @current_user.writings.new(writing_params)
         writing.status = "draft"
         if writing.save 
@@ -51,7 +59,7 @@ module Api
         render json: serializer.new(@writing, include: [:user, :comments]), status: :ok
       end
 
-      def saved
+      def drafts
         writings = @current_user.writings.draft
         render json: serializer.new(writings, include: [:user, :comments]), status: :ok
       end
@@ -65,6 +73,10 @@ module Api
 
       def serializer
         WritingSerializer
+      end
+
+      def check_draft
+        return render json: { errors: { base: 'Writing is not a draft' } }, status: :bad_request unless @writing.draft?
       end
 
       def find_writing 
