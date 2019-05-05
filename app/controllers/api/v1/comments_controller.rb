@@ -3,8 +3,10 @@ module Api
     class CommentsController < ApplicationController
       before_action :find_writing
       before_action :find_comment, except: [:create]
-      before_action :check_user_authorized, except: [:create]
+      before_action :check_user_authored_writing, only: [:accept, :decline]
+      before_action :check_user_authored_comment, only: [:update]
       before_action :check_thread_active
+      before_action :check_comment_approved, only: [:update]
 
       def create 
         comment = @writing.comments.new(comment_params)
@@ -27,18 +29,30 @@ module Api
         render status: :no_content 
       end
 
+      def update 
+        if @comment.update(comment_params)
+          render json: { message: 'Comment created successfully' }, status: :ok
+        else 
+          render json: { errors: @comment.errors.messages }, status: :unprocessable_entity
+        end
+      end
+
       private 
 
-      def check_user_authorized 
-        return invalid_authentication unless authorized?  
+      def check_user_authored_writing
+        return invalid_authentication unless @writing.user.id === @current_user.id
+      end
+
+      def check_user_authored_comment
+        return invalid_authentication unless @comment.user_id === @current_user.id
+      end
+
+      def check_comment_approved
+        return render json: { errors: { base: 'Cannot edit comment after it has been approved'} }, status: :bad_request if @comment.approved?
       end
 
       def check_thread_active
         return render json: { errors: { base: 'Thread is closed' } }, status: :bad_request if @writing.archived?
-      end
-
-      def authorized?
-        @writing.user.id === @current_user.id
       end
 
       def find_comment 

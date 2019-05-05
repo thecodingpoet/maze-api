@@ -19,7 +19,7 @@ Rails.application.routes.draw do
           get '/drafts', to: 'writings#drafts'
           post '/drafts', to: 'writings#save_draft'
         end
-        resources :comments, only: [:create] do
+        resources :comments, only: [:create, :update] do
           member do
             put '/accept', to: 'comments#accept'
             put '/decline', to: 'comments#decline'
