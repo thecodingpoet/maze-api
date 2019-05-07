@@ -8,7 +8,16 @@ Rails.application.routes.draw do
       put '/user', to: 'users#update'
       get '/timeline', to: 'writings#timeline'
       get '/supports', to: 'writings#support'
-  
+      
+      resources :users, only: [:update, :show] do
+        member do
+          post 'favorite'
+        end
+        collection do
+          patch 'confirm'
+        end
+      end
+
       resources :writings do
         member do
           patch '/archive', to: 'writings#archive'
@@ -26,11 +35,7 @@ Rails.application.routes.draw do
           end
         end
       end
-      resources :users, only: [:update, :show] do
-        member do
-          post 'favorite'
-        end
-      end
+   
     end
   end
   root 'home#index'

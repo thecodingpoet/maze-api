@@ -1,7 +1,7 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      skip_before_action :authenticate_request!, only: [:login, :create] 
+      skip_before_action :authenticate_request!, only: [:login, :create, :confirm] 
       before_action :check_user_authorized, only: [:update]
       before_action :find_user, only: [:update]
 
@@ -13,6 +13,19 @@ module Api
           render json: { message: 'User created successfully', token: token }, status: :created
         else
           render json: { errors: user.errors.messages }, status: :bad_request
+        end
+      end
+
+      def confirm
+        token = params[:token].to_s
+      
+        user = User.find_by(confirmation_token: token)
+      
+        if user.present? && user.confirmation_token_valid?
+          user.mark_as_confirmed!
+          render json: { message: 'User confirmed successfully' }, status: :ok
+        else
+          render json: { errors: { base: 'Invalid token' } }, status: :not_found
         end
       end
 
