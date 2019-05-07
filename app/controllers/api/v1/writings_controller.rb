@@ -11,7 +11,7 @@ module Api
 
       def timeline 
         writings = Writing.order('created_at DESC').limit(5)
-        render json: serializer.new(writings, include: [:user, :comments]), status: :ok
+        render json: serializer.new(writings, include: [:user]), status: :ok
       end
 
       def create 
