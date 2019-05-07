@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
-  has_many :strengths
-  has_many :concerns
+  has_many :strengths, dependent: :destroy
+  has_many :concerns, dependent: :destroy
   has_many :writings, dependent: :destroy
  
   has_many :active_friendships, class_name: "Friendship", foreign_key: "follower_id", dependent: :destroy

@@ -2,10 +2,10 @@ module Api
   module V1
     class CommentsController < ApplicationController
       before_action :find_writing
+      before_action :check_thread_active
       before_action :find_comment, except: [:create]
       before_action :check_user_authored_writing, only: [:accept, :decline]
       before_action :check_user_authored_comment, only: [:update]
-      before_action :check_thread_active
       before_action :check_comment_approved, only: [:update]
 
       def create 
