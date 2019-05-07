@@ -26,11 +26,11 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  # Don't care if the mailer can't send.
+  # Show error if the mailer can't send.
   config.action_mailer.raise_delivery_errors = true
 
-  # Change mail delivery to either :smtp, :sendmail, :file, :test
-  config.action_mailer.delivery_method = :smtp
+  # Change mail delivery to letter_opener for development
+  config.action_mailer.delivery_method = :letter_opener
 
   # add delivery options
   config.action_mailer.default_options = {from: 'no-reply@i-lu.com'}
