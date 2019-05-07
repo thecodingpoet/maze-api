@@ -40,11 +40,11 @@ module Api
       private 
 
       def check_user_authored_writing
-        return invalid_authentication unless @writing.user.id === @current_user.id
+        return invalid_authentication unless @writing.user.id == @current_user.id
       end
 
       def check_user_authored_comment
-        return invalid_authentication unless @comment.user_id === @current_user.id
+        return invalid_authentication unless @comment.user_id == @current_user.id
       end
 
       def check_comment_approved
