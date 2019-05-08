@@ -18,7 +18,7 @@ module Api
 
       def reset
         token = params[:token].to_s
-        return render json: { errors: base: { 'Token not present' } } if params[:token].blank?
+        return render json: { errors: { base: 'Token not present' } } if params[:token].blank?
         user = User.find_by(reset_password_token: token)
 
         if user.present? && user.password_token_valid?
@@ -33,7 +33,7 @@ module Api
       end
 
       def update
-        return render json: { errors: { base: { 'Password not present' } }, status: :unprocessable_entity unless params[:password].present?
+        return render json: { errors: { base:  'Password not present' } }, status: :unprocessable_entity unless params[:password].present?
         if @current_user.reset_password(params[:password])
           render status: :no_content
         else
