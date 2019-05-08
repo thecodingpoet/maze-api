@@ -68,6 +68,15 @@ module Api
         end
       end
 
+      def update_password
+        return render json: { error: 'Password not present' }, status: :unprocessable_entity unless params[:password].present?
+        if @current_user.reset_password(params[:password])
+          render status: :no_content
+        else
+          render json: { errors: @current_user.errors.messages }, status: :unprocessable_entity
+        end
+      end
+
       def show  
         user = User.where(id: user_id).left_outer_joins(:strengths, :concerns).first
         render json: serializer.new(user, include: [:strengths, :concerns]), status: :ok

@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       get '/supports', to: 'writings#support'
       post 'password/forgot', to: 'password#forgot'
       post 'password/reset', to: 'password#reset'
+      patch 'password/update', to: 'password#update'
       
       resources :users, only: [:update, :show] do
         member do
