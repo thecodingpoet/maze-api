@@ -8,6 +8,8 @@ Rails.application.routes.draw do
       put '/user', to: 'users#update'
       get '/timeline', to: 'writings#timeline'
       get '/supports', to: 'writings#support'
+      post 'password/forgot', to: 'password#forgot'
+      post 'password/reset', to: 'password#reset'
       
       resources :users, only: [:update, :show] do
         member do

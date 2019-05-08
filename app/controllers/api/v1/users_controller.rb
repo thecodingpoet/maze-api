@@ -39,6 +39,35 @@ module Api
         end
       end
 
+      def forgot
+        return render json: {error: 'Email not present'} if params[:email].blank?
+        user = User.find_by(email: email.downcase)
+    
+        if user.present? && user.confirmed_at?
+          user.generate_password_token!
+          UserMailer.reset_password(user).deliver_later
+          render json: { message: 'ok' }, status: :ok
+        else
+          render json: { error: { base: 'Email address not found. Please check and try again.'}}, status: :not_found
+        end
+      end
+    
+      def reset
+        token = params[:token].to_s
+        return render json: {error: 'Token not present'} if params[:email].blank?
+        user = User.find_by(reset_password_token: token)
+    
+        if user.present? && user.password_token_valid?
+          if user.reset_password!(params[:password])
+            render json: {message: 'ok'}, status: :ok
+          else
+            render json: {error: user.errors.messages}, status: :unprocessable_entity
+          end
+        else
+          render json: {error:  { base: 'Link not valid or expired. Try generating a new link.'}}, status: :not_found
+        end
+      end
+
       def show  
         user = User.where(id: user_id).left_outer_joins(:strengths, :concerns).first
         render json: serializer.new(user, include: [:strengths, :concerns]), status: :ok
