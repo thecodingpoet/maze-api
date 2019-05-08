@@ -10,9 +10,9 @@ module Api
         if user.present? && user.confirmed_at?
           user.generate_password_token!
           UserMailer.reset_password(user).deliver_later
-          render json: { message: 'ok' }, status: :ok
+          render json: { message: 'Email has been sent with link to reset password' }, status: :ok
         else
-          render json: { error: { base: 'Email address not found. Please check and try again.'}}, status: :not_found
+          render json: { error: { base: 'Email address not found. Please check and try again.'} }, status: :not_found
         end
       end
 
@@ -23,17 +23,17 @@ module Api
 
         if user.present? && user.password_token_valid?
           if user.reset_password!(params[:password])
-            render json: {message: 'ok'}, status: :ok
+            render json: { message: 'Password has been reset successfully' }, status: :ok
           else
             render json: {error: user.errors.messages}, status: :unprocessable_entity
           end
         else
-          render json: {error:  { base: 'Link not valid or expired. Try generating a new link.'}}, status: :not_found
+          render json: {error:  { base: 'Link not valid or expired. Try generating a new link.' }}, status: :not_found
         end
       end
 
       def update
-        return render json: { error: 'Password not present' }, status: :unprocessable_entity unless params[:password].present?
+        return render json: { error: { base: { 'Password not present' } }, status: :unprocessable_entity unless params[:password].present?
         if @current_user.reset_password(params[:password])
           render status: :no_content
         else
