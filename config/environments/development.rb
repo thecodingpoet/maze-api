@@ -33,7 +33,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :letter_opener
 
   # add delivery options
-  config.action_mailer.default_options = {from: 'no-reply@i-lu.com'}
+  config.action_mailer.default_options = {from: 'admin@i-lu.com'}
 
   # SMTP settings for gmail
   config.action_mailer.smtp_settings = {

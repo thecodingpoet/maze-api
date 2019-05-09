@@ -1,5 +1,5 @@
 class UserMailer < ApplicationMailer
-  default :from => "no-reply@i-lu.com"
+  default :from => "admin@i-lu.com"
 
   def signup_confirmation(user)
     @user = user
