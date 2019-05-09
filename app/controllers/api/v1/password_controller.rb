@@ -9,7 +9,7 @@ module Api
 
         if user.present? && user.confirmed_at?
           user.generate_password_token!
-          UserMailer.reset_password(user).deliver_later
+          UserMailer.reset_password(user).deliver_now
           render json: { message: 'Email has been sent with link to reset password' }, status: :ok
         else
           render json: { errors: { base: 'Email address not found. Please check and try again.'} }, status: :not_found

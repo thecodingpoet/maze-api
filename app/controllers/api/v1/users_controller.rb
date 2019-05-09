@@ -9,7 +9,7 @@ module Api
         user = User.new(user_params)
         if user.save
           token = JsonWebToken.encode(user_id: user.id)
-          UserMailer.signup_confirmation(user).deliver_later
+          UserMailer.signup_confirmation(user).deliver_now
           render json: { message: 'User created successfully', token: token }, status: :created
         else
           render json: { errors: user.errors.messages }, status: :bad_request
