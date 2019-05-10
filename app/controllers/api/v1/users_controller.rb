@@ -8,9 +8,8 @@ module Api
       def create
         user = User.new(user_params)
         if user.save
-          token = JsonWebToken.encode(user_id: user.id)
           UserMailer.signup_confirmation(user).deliver_now
-          render json: { message: 'User created successfully', token: token }, status: :created
+          render json: { message: 'A mail has been sent with link to verify email' }, status: :created
         else
           render json: { errors: user.errors.messages }, status: :bad_request
         end
@@ -18,12 +17,11 @@ module Api
 
       def confirm
         token = params[:token].to_s
-      
         user = User.find_by(confirmation_token: token)
-      
         if user.present? && user.confirmation_token_valid?
           user.mark_as_confirmed!
-          render json: { message: 'User confirmed successfully' }, status: :ok
+          token = JsonWebToken.encode(user_id: user.id)
+          render json: { message: 'User confirmed successfully', token: token }, status: :ok
         else
           render json: { errors: { base: 'Invalid token' } }, status: :not_found
         end
