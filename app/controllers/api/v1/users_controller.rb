@@ -68,7 +68,7 @@ module Api
       end
 
       def check_email_verified 
-        return render json: { errors: { base: 'Check your email address for email verification link'} }, status: :unauthorized if @user.present? && !@user.confirmation_token_valid?
+        return render json: { errors: { base: 'Check your email address for email verification link'} }, status: :unauthorized if @user.present? && !@user.confirmed_at?
       end
 
       def check_user_authorized
