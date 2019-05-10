@@ -20,8 +20,8 @@ module Api
         user = User.find_by(confirmation_token: token)
         if user.present? && user.confirmation_token_valid?
           user.mark_as_confirmed!
-          token = JsonWebToken.encode(user_id: user.id)
-          render json: { message: 'User confirmed successfully', token: token }, status: :ok
+          auth_token = JsonWebToken.encode(user_id: user.id)
+          render json: { message: 'User confirmed successfully', token: auth_token }, status: :ok
         else
           render json: { errors: { base: 'Invalid token' } }, status: :not_found
         end
