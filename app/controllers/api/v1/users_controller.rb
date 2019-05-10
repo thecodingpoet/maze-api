@@ -4,6 +4,8 @@ module Api
       skip_before_action :authenticate_request!, only: [:login, :create, :confirm] 
       before_action :check_user_authorized, only: [:update]
       before_action :find_user, only: [:update]
+      before_action :find_user_by_email, only: [:login]
+      before_action :check_email_verified, only: [:login]
 
       def create
         user = User.new(user_params)
@@ -28,8 +30,7 @@ module Api
       end
 
       def login
-        user = User.find_by(email: params[:user][:email].to_s.downcase)
-        if user && user.authenticate(params[:user][:password])
+        if @user && @user.authenticate(params[:user][:password])
           token = JsonWebToken.encode(user_id: user.id)
           render json: { message: 'User logged in successfully', token: token }, status: :ok
         else
@@ -60,6 +61,14 @@ module Api
 
       def find_user 
         @user = User.find(user_id)
+      end
+
+      def find_user_by_email
+        @user = User.find_by(email: params[:user][:email].to_s.downcase)
+      end
+
+      def check_email_verified 
+        return render json: { errors: { base: 'Check your email address for email verification link'} }, status: :unauthorized if @user.present? && !@user.confirmation_token_valid?
       end
 
       def check_user_authorized
