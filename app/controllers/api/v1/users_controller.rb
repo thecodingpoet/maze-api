@@ -31,7 +31,7 @@ module Api
 
       def login
         if @user && @user.authenticate(params[:user][:password])
-          token = JsonWebToken.encode(user_id: user.id)
+          token = JsonWebToken.encode(user_id: @user.id)
           render json: { message: 'User logged in successfully', token: token }, status: :ok
         else
           render json: { errors: { base: 'Invalid username or password'} }, status: :unauthorized

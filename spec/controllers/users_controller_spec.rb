@@ -20,12 +20,7 @@ RSpec.describe Api::V1::UsersController, type: :request do
 
       it 'returns success message' do
         json = JSON.parse(response.body)
-        expect(json['message']).to match(/User created successfully/)
-      end
-
-      it 'returns an authenticated token' do
-        json = JSON.parse(response.body)
-        expect(json['token']).not_to be_nil
+        expect(json['message']).to match(/A mail has been sent with link to verify email/)
       end
     end
 
@@ -65,7 +60,6 @@ RSpec.describe Api::V1::UsersController, type: :request do
 
     context 'When request is valid' do 
       before { post '/api/v1/login', params: valid_credentials, headers: headers }
-
       it 'returns an authenticated token' do
         json = JSON.parse(response.body)
         expect(json['token']).not_to be_nil
