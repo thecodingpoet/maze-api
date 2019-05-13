@@ -10,7 +10,10 @@ module Api
       end
 
       def timeline 
-        writings = Writing.order('created_at DESC').limit(5)
+        writings = Writing.shared.
+                           without_user_writings(@current_user).
+                           without_user_supports(@current_user).
+                           limit(5)
         render json: serializer.new(writings, include: [:user]), status: :ok
       end
 
