@@ -13,6 +13,7 @@ module Api
         writings = Writing.shared.
                            without_user_writings(@current_user).
                            without_user_supports(@current_user).
+                           order('created_at DESC').
                            limit(5)
         render json: serializer.new(writings, include: [:user]), status: :ok
       end
