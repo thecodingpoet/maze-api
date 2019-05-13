@@ -12,6 +12,10 @@ class Writing < ApplicationRecord
   }
 
   scope :without_user_supports, -> (user) {
-    joins(:comments).where.not(:comments => { :user_id => user.id }).distinct
+    left_outer_joins(:comments).where.not(:comments => { :user_id => user.id }).or(without_any_support).distinct
+  }
+
+  scope :without_any_support, -> {
+    left_outer_joins(:comments).where(:comments => { :user_id => nil })
   }
 end
