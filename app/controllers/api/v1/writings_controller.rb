@@ -95,9 +95,7 @@ module Api
 
       def notify_thread_participants
         participants = @writing.get_thread_participants.reject { |user| user.id == @current_user.id }
-        participants.each do |user|   
-          WritingMailer.thread_closure_notification(@writing, user).deliver_later
-        end
+        participants.each { |user| WritingMailer.thread_closure_notification(@writing, user).deliver_later }
       end
     end
   end  
