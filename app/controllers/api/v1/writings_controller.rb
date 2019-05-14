@@ -57,7 +57,7 @@ module Api
 
       def archive
         @writing.archived!
-        # WritingMailer.thread_closure_notification(@writing).deliver_later
+        notify_thread_participants
         render json: { message: 'Writing archived successfully' }, status: :ok
       end
 
@@ -91,6 +91,13 @@ module Api
 
       def writing_params
         params.require(:writing).permit(:title, :entry)
+      end
+
+      def notify_thread_participants
+        participants = @writing.get_thread_participants.reject { |user| user.id == @current_user.id }
+        participants.each do |user|   
+          WritingMailer.thread_closure_notification(@writing, user).deliver_later
+        end
       end
     end
   end  
