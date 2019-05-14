@@ -13,7 +13,7 @@ module Api
         comment.user = @current_user
 
         if comment.save 
-          # CommentMailer.new_comment_notification(@writing.comments.user).deliver_later
+          CommentMailer.new_support_notification(@writing).deliver_later
           render json: { message: 'Comment created successfully' }, status: :ok
         else 
           render json: { errors: comment.errors.messages }, status: :unprocessable_entity
@@ -23,6 +23,7 @@ module Api
       def accept 
         @comment.update_attribute(:approved, true)
         CommentMailer.accepted_comment_notification(@comment).deliver_later
+        notify_thread_participants
         render status: :no_content
       end
 
@@ -68,6 +69,18 @@ module Api
 
       def comment_params
         params.require(:comment).permit(:content)
+      end
+
+      def get_thread_participants
+        participants = @writing.comments.approved.map { |comment| comment.user }
+        participants.uniq.reject { |user| user.id == @current_user.id || user.id == @comment.user_id }
+      end
+
+      def notify_thread_participants
+        participants = get_thread_participants
+        participants.each do |user|   
+          CommentMailer.new_comment_notification(@writing, user).deliver_later
+        end
       end
     end
   end  
