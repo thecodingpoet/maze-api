@@ -71,13 +71,8 @@ module Api
         params.require(:comment).permit(:content)
       end
 
-      def get_thread_participants
-        participants = @writing.comments.approved.map { |comment| comment.user }
-        participants.uniq.reject { |user| user.id == @current_user.id || user.id == @comment.user_id }
-      end
-
       def notify_thread_participants
-        participants = get_thread_participants
+        participants = @writing.get_thread_participants.reject { |user| user.id == @current_user.id || user.id == @comment.user_id }
         participants.each do |user|   
           CommentMailer.new_comment_notification(@writing, user).deliver_later
         end

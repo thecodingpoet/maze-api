@@ -18,4 +18,8 @@ class Writing < ApplicationRecord
   scope :without_any_support, -> {
     left_outer_joins(:comments).where(:comments => { :user_id => nil })
   }
+
+  def get_thread_participants
+    comments.approved.map { |comment| comment.user }.uniq
+  end
 end
