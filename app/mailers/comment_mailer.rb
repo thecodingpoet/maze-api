@@ -4,7 +4,7 @@ class CommentMailer < ApplicationMailer
     mail(:to => "#{@comment.user.email}", :subject => "I-LU")
   end
   
-  def declined_comment_notification(user)
+  def declined_comment_notification(comment)
     @comment = comment
     mail(:to => "#{@comment.user.email}", :subject => "I-LU")
   end 
