@@ -13,6 +13,7 @@ module Api
         comment.user = @current_user
 
         if comment.save 
+          # CommentMailer.new_comment_notification(@writing.comments.user).deliver_later
           render json: { message: 'Comment created successfully' }, status: :ok
         else 
           render json: { errors: comment.errors.messages }, status: :unprocessable_entity
@@ -21,11 +22,13 @@ module Api
 
       def accept 
         @comment.update_attribute(:approved, true)
+        CommentMailer.accepted_comment_notification(@comment).deliver_later
         render status: :no_content
       end
 
       def decline
         @comment.update_attribute(:approved, false)
+        CommentMailer.declined_comment_notification(@comment).deliver_later
         render status: :no_content 
       end
 

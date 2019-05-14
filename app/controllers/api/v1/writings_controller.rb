@@ -57,6 +57,7 @@ module Api
 
       def archive
         @writing.archived!
+        # WritingMailer.thread_closure_notification(@current_user).deliver_later
         render json: { message: 'Writing archived successfully' }, status: :ok
       end
 
