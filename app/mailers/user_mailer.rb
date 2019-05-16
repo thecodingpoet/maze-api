@@ -1,6 +1,4 @@
 class UserMailer < ApplicationMailer
-  default :from => "admin@i-lu.com"
-
   def signup_confirmation(user)
     @user = user
     mail(:to => "#{user.email}", :subject => "Confirm your account on I-LU")
