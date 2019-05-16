@@ -71,7 +71,7 @@ module Api
       end
 
       def support 
-        writings = Writing.joins(:comments).where(:comments => {user_id: @current_user.id}).distinct
+        writings = Writing.without_user_writings(@current_user).with_user_supports(@current_user)
         render json: serializer.new(writings, include: [:user, :comments]), status: :ok
       end
 
