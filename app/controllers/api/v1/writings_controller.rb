@@ -70,7 +70,7 @@ module Api
       end
 
       def support 
-        writings = Writing.joins(:comments).where(:comments => {user_id: @current_user.id})
+        writings = Writing.joins(:comments).where(:comments => {user_id: @current_user.id}).distinct
         render json: serializer.new(writings, include: [:user, :comments]), status: :ok
       end
 
