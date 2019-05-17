@@ -14,7 +14,6 @@ class Writing < ApplicationRecord
     left_outer_joins(:comments).where.not(:comments => { :user_id => user.id }).or(without_any_support).distinct
   }
 
-
   def get_thread_participants
     comments.approved.map { |comment| comment.user }.uniq
   end

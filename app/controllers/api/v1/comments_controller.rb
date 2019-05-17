@@ -29,7 +29,6 @@ module Api
 
       def decline
         @comment.update_attribute(:approved, false)
-        CommentMailer.declined_comment_notification(@comment).deliver_later
         render status: :no_content 
       end
 
