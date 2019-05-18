@@ -71,7 +71,10 @@ module Api
       end
 
       def support 
-        writings = Writing.without_user_writings(@current_user).with_user_supports(@current_user)
+        writings = Writing.shared.
+                           without_user_writings(@current_user).
+                           with_user_supports(@current_user).
+                           without_declined_support
         render json: serializer.new(writings, include: [:user, :comments]), status: :ok
       end
 
