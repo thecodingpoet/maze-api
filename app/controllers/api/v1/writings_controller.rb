@@ -10,13 +10,7 @@ module Api
       end
 
       def timeline 
-        writings = Writing.shared.
-                           without_user_writings(@current_user).
-                           without_user_supports(@current_user).
-                           order('comments_count ASC').
-                           order('created_at DESC').
-                           limit(5)
-        render json: serializer.new(writings, include: [:user]), status: :ok
+        render json: serializer.new(timeline_writings, include: [:user]), status: :ok
       end
 
       def create 
@@ -79,6 +73,29 @@ module Api
       end
 
       private
+
+      def timeline_writings
+        page = 1
+        feed = get_feed_writings(page)
+        while (feed.length <= 5) do
+          page += 1
+          writings = get_feed_writings(page)
+          break if writings.empty?
+          feed << writings
+          feed.flatten
+        end
+        feed.first(5)
+      end
+
+      def get_feed_writings(page)
+        Writing.shared.
+                without_user_writings(@current_user).
+                includes(:comments).
+                order('comments_count ASC').
+                order('writings.created_at DESC').
+                paginate(page: page, per_page: 30).
+                reject { |w| w.comments.pluck(:user_id).include? @current_user.id }
+      end
 
       def serializer
         WritingSerializer
