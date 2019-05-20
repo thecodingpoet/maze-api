@@ -68,7 +68,8 @@ module Api
         writings = Writing.shared.
                            without_user_writings(@current_user).
                            with_user_supports(@current_user).
-                           without_declined_support
+                           without_declined_support.
+                           order('created_at DESC')
         render json: serializer.new(writings, include: [:user, :comments]), status: :ok
       end
 
@@ -91,8 +92,7 @@ module Api
         Writing.shared.
                 without_user_writings(@current_user).
                 includes(:comments).
-                order('comments_count ASC').
-                order('writings.created_at DESC').
+                order('comments_count ASC, writings.created_at DESC').
                 paginate(page: page, per_page: 30).
                 reject { |w| w.comments.pluck(:user_id).include? @current_user.id }
       end
