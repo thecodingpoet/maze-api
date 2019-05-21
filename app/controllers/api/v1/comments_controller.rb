@@ -10,8 +10,9 @@ module Api
 
       def create 
         comment = @writing.comments.new(comment_params)
-        comment.user = @current_user
-
+        comment.user = @current_user  
+        thread_access = @writing.comments.where(user_id: @current_user.id).order(:created_at).first
+        comment.approved = thread_access.approved if thread_access.present?                 
         if comment.save 
           CommentMailer.new_support_notification(@writing).deliver_later
           render json: { message: 'Comment created successfully' }, status: :ok
