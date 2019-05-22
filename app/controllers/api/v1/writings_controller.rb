@@ -6,7 +6,7 @@ module Api
 
       def index
         writings = @current_user.writings.shared.order('created_at DESC')
-        render json: serializer.new(writings, include: [:user, :comments]), status: :ok
+        render json: serializer.new(writings, include: [:user]), status: :ok
       end
 
       def timeline 
@@ -61,7 +61,7 @@ module Api
 
       def drafts
         writings = @current_user.writings.draft
-        render json: serializer.new(writings, include: [:user, :comments]), status: :ok
+        render json: serializer.new(writings, include: [:user]), status: :ok
       end
 
       def support 
@@ -70,7 +70,7 @@ module Api
                            with_user_supports(@current_user).
                            without_declined_support.
                            order('created_at DESC')
-        render json: serializer.new(writings, include: [:user, :comments]), status: :ok
+        render json: serializer.new(writings, include: [:user]), status: :ok
       end
 
       private
