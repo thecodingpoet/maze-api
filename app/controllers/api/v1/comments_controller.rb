@@ -14,7 +14,7 @@ module Api
         thread_access = @writing.comments.where(user_id: @current_user.id).order(:created_at).first
         comment.approved = thread_access.approved if thread_access.present?                 
         if comment.save 
-          CommentMailer.new_support_notification(@writing).deliver_later
+          CommentMailer.new_support_notification(@writing).deliver_later unless @writing.user_id == @current_user.id
           render json: { message: 'Comment created successfully' }, status: :ok
         else 
           render json: { errors: comment.errors.messages }, status: :unprocessable_entity
