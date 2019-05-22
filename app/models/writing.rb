@@ -8,7 +8,7 @@ class Writing < ApplicationRecord
   enum status: [:draft, :shared, :archived]
   
   scope :without_user_writings, -> (user) { where.not(:user_id => user.id) }
-  scope :with_user_supports, -> (user) { joins(:comments).where(:comments => {user_id: user.id}).distinct }
+  scope :with_user_supports, -> (user) { joins(:comments).where(:comments => {user_id: user.id}) }
   scope :without_declined_support, -> { joins(:comments).merge(Comment.not_declined) }
 
   def get_thread_participants
