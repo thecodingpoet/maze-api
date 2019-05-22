@@ -51,6 +51,14 @@ module Api
         end
       end
 
+      def check_email_exist
+        if User.find_by_email(params[:email]).blank?
+          render json: { message: 'Email ok' }, status: :ok
+        else
+          render json: { errors: { base: 'Email already exists'} }, status: :unprocessable_entity
+        end
+      end
+
       def favorite 
         user = User.find(params[:id])
         @current_user.follow(user)

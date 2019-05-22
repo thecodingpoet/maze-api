@@ -18,6 +18,7 @@ Rails.application.routes.draw do
         end
         collection do
           patch 'confirm'
+          get 'email', to: 'users#check_email_exist'
         end
       end
 
