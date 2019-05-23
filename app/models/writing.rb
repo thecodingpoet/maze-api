@@ -9,6 +9,7 @@ class Writing < ApplicationRecord
 
   default_scope { order(created_at: :desc) }
   
+  scope :shared_or_archived, -> { where(status: [:shared, :archived]) }
   scope :without_user_writings, -> (user) { where.not(:user_id => user.id) }
   scope :with_user_supports, -> (user) { joins(:comments).where(:comments => {user_id: user.id}) }
   scope :without_declined_support, -> { joins(:comments).merge(Comment.not_declined) }
