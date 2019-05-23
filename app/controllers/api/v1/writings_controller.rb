@@ -69,7 +69,7 @@ module Api
                            without_user_writings(@current_user).
                            with_user_supports(@current_user).
                            without_declined_support.
-                           order('writings.created_at DESC').
+                           order('created_at DESC').
                            uniq
         render json: serializer.new(writings, include: [:user, :comments]), status: :ok
       end
