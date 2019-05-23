@@ -6,12 +6,11 @@ module Api
       before_action :find_comment, except: [:create]
       before_action :check_user_authored_writing, only: [:accept, :decline]
       before_action :check_user_authored_comment, only: [:update]
-      before_action :check_comment_approved, only: [:update]
 
       def create 
         comment = @writing.comments.new(comment_params)
         comment.user = @current_user  
-        thread_access = @writing.comments.where(user_id: @current_user.id).order(:created_at).first
+        thread_access = @writing.comments.where(user_id: @current_user.id).first
         comment.approved = thread_access.approved if thread_access.present?                 
         if comment.save 
           CommentMailer.new_support_notification(@writing).deliver_later unless @writing.user_id == @current_user.id
@@ -51,9 +50,6 @@ module Api
         return invalid_authentication unless @comment.user_id == @current_user.id
       end
 
-      def check_comment_approved
-        return render json: { errors: { base: 'Cannot edit comment after it has been approved'} }, status: :bad_request if @comment.approved?
-      end
 
       def check_thread_active
         return render json: { errors: { base: 'Thread is closed' } }, status: :bad_request if @writing.archived?
