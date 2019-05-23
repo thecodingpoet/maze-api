@@ -1,7 +1,7 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      skip_before_action :authenticate_request!, only: [:login, :create, :confirm] 
+      skip_before_action :authenticate_request!, only: [:login, :create, :confirm, :check_email_exist] 
       before_action :check_user_authorized, only: [:update]
       before_action :find_user, only: [:update]
       before_action :find_user_by_email, only: [:login]
