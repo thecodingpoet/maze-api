@@ -10,8 +10,7 @@ module Api
       def create 
         comment = @writing.comments.new(comment_params)
         comment.user = @current_user  
-        thread_access = @writing.comments.where(user_id: @current_user.id).first
-        comment.approved = thread_access.approved if thread_access.present?                 
+        comment.approved = comment_approved                
         if comment.save 
           CommentMailer.new_support_notification(@writing).deliver_later unless @writing.user_id == @current_user.id
           render json: { message: 'Comment created successfully' }, status: :ok
@@ -50,9 +49,13 @@ module Api
         return invalid_authentication unless @comment.user_id == @current_user.id
       end
 
-
       def check_thread_active
         return render json: { errors: { base: 'Thread is closed' } }, status: :bad_request if @writing.archived?
+      end
+
+      def comment_approved
+        return true if @writing.user_id == @current_user.id
+        @writing.comments.where(user_id: @current_user.id).first.try(:approved)
       end
 
       def find_comment 
