@@ -22,14 +22,14 @@ module Api
       end
 
       def accept 
-        @comment.update_attribute(:approved, true)
+        @writing.comments.where(user_id: @comment.user_id).update_all(approved: true)
         CommentMailer.accepted_comment_notification(@comment).deliver_later
         notify_thread_participants
         render status: :no_content
       end
 
       def decline
-        @comment.update_attribute(:approved, false)
+        @writing.comments.where(user_id: @comment.user_id).update_all(approved: false)
         render status: :no_content 
       end
 
