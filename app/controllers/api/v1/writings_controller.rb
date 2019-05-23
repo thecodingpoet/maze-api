@@ -5,7 +5,7 @@ module Api
       before_action :check_draft, only: [:update_draft, :publish_draft]
 
       def index
-        writings = @current_user.writings.shared.order('created_at DESC')
+        writings = @current_user.writings.shared
         render json: serializer.new(writings, include: [:user]), status: :ok
       end
 
@@ -69,8 +69,8 @@ module Api
                            without_user_writings(@current_user).
                            with_user_supports(@current_user).
                            without_declined_support.
-                           order('created_at DESC').
                            uniq
+        
         render json: serializer.new(writings, include: [:user, :comments]), status: :ok
       end
 
@@ -93,7 +93,7 @@ module Api
         Writing.shared.
                 without_user_writings(@current_user).
                 includes(:comments).
-                order('comments_count ASC, writings.created_at DESC').
+                order('comments_count ASC').
                 paginate(page: page, per_page: 30).
                 reject { |w| w.comments.pluck(:user_id).include? @current_user.id }
       end

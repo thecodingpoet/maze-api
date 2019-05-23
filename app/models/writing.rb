@@ -6,6 +6,8 @@ class Writing < ApplicationRecord
   validates :entry, presence: true
 
   enum status: [:draft, :shared, :archived]
+
+  default_scope { order(created_at: :desc) }
   
   scope :without_user_writings, -> (user) { where.not(:user_id => user.id) }
   scope :with_user_supports, -> (user) { joins(:comments).where(:comments => {user_id: user.id}) }
