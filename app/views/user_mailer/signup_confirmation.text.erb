@@ -2,7 +2,7 @@ Dear <%= @user.username %>,
 
 Thank you for signing up on i-LU! Kindly follow this link to activate your account:
 
-<%= ENV['frontend_url'] %>/<%= @user.confirmation_token %>/confirm_email
+<%= ENV['frontend_url'] %>/users/<%= @user.confirmation_token %>/confirm_email
 
 Don't hesitate to contact us with your feedback.
 
