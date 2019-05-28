@@ -1,10 +1,12 @@
 class Writing < ApplicationRecord
   belongs_to :user
   has_many :comments, dependent: :destroy
-
+  
   validates :title, presence: true 
   validates :entry, presence: true
 
+  self.per_page = 10
+  
   enum status: [:draft, :shared, :archived]
 
   default_scope { order(created_at: :desc) }

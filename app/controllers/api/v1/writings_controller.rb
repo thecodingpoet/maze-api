@@ -5,7 +5,7 @@ module Api
       before_action :check_draft, only: [:update_draft, :publish_draft]
 
       def index
-        writings = @current_user.writings.shared_or_archived
+        writings = @current_user.writings.shared_or_archived.page(params[:page])
         render json: serializer.new(writings, include: [:user]), status: :ok
       end
 
@@ -60,7 +60,7 @@ module Api
       end
 
       def drafts
-        writings = @current_user.writings.draft
+        writings = @current_user.writings.draft.page(params[:page])
         render json: serializer.new(writings, include: [:user]), status: :ok
       end
 
