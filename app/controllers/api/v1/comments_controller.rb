@@ -6,6 +6,7 @@ module Api
       before_action :find_comment, except: [:create]
       before_action :check_user_authored_writing, only: [:accept, :decline]
       before_action :check_user_authored_comment, only: [:update]
+      before_action :check_pending_support, only: [:create]
 
       def create 
         comment = @writing.comments.new(comment_params)
@@ -53,9 +54,17 @@ module Api
         return render json: { errors: { base: 'Thread is closed' } }, status: :bad_request if @writing.archived?
       end
 
+      def check_pending_support
+        return render json: { errors: { base: 'Cannot add another support until first support is approved' } } unless writers_first_support.nil? || writers_first_support.try(:approved)
+      end
+
       def comment_approved
         return true if @writing.user_id == @current_user.id
-        @writing.comments.where(user_id: @current_user.id).first.try(:approved)
+        writers_first_support.try(:approved)
+      end
+
+      def writers_first_support
+        @writing.comments.where(user_id: @current_user.id).first
       end
 
       def find_comment 
