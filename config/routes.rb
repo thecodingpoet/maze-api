@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       resources :users, only: [:update, :show] do
         member do
           post 'favorite'
+          patch 'terms_and_condition'
         end
         collection do
           patch 'confirm'

@@ -2,7 +2,7 @@ module Api
   module V1
     class UsersController < ApplicationController
       skip_before_action :authenticate_request!, only: [:login, :create, :confirm, :check_email_exist] 
-      before_action :check_user_authorized, only: [:update]
+      before_action :check_user_authorized, only: [:update, :terms_and_condition]
       before_action :find_user, only: [:update]
       before_action :find_user_by_email, only: [:login]
       before_action :check_email_verified, only: [:login]
@@ -57,6 +57,11 @@ module Api
         else
           render json: { errors: { base: 'Email already exists'} }, status: :unprocessable_entity
         end
+      end
+
+      def terms_and_condition
+        @current_user.touch(:terms_and_condition)
+        render status: :no_content
       end
 
       def favorite 
