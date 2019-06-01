@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :strengths, dependent: :destroy
   has_many :concerns, dependent: :destroy
   has_many :writings, dependent: :destroy
+  has_many :feedback
  
   has_many :active_friendships, class_name: "Friendship", foreign_key: "follower_id", dependent: :destroy
   has_many :passive_friendships, class_name: "Friendship", foreign_key: "followed_id", dependent: :destroy

@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       patch 'password/reset', to: 'password#reset'
       patch 'password/update', to: 'password#update'
       
+      resources :feedback, only: [:index, :create]
       resources :users, only: [:update, :show] do
         member do
           post 'favorite'

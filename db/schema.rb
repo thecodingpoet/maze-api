@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190513225651) do
+ActiveRecord::Schema.define(version: 20190601123053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,14 @@ ActiveRecord::Schema.define(version: 20190513225651) do
     t.index ["user_id"], name: "index_concerns_on_user_id"
   end
 
+  create_table "feedbacks", force: :cascade do |t|
+    t.text "message"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_feedbacks_on_user_id"
+  end
+
   create_table "friendships", force: :cascade do |t|
     t.integer "follower_id"
     t.integer "followed_id"
@@ -52,6 +60,16 @@ ActiveRecord::Schema.define(version: 20190513225651) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_strengths_on_user_id"
+  end
+
+  create_table "thread_accesses", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "writing_id"
+    t.boolean "access", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_thread_accesses_on_user_id"
+    t.index ["writing_id"], name: "index_thread_accesses_on_writing_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -87,6 +105,9 @@ ActiveRecord::Schema.define(version: 20190513225651) do
   add_foreign_key "comments", "users"
   add_foreign_key "comments", "writings"
   add_foreign_key "concerns", "users"
+  add_foreign_key "feedbacks", "users"
   add_foreign_key "strengths", "users"
+  add_foreign_key "thread_accesses", "users"
+  add_foreign_key "thread_accesses", "writings"
   add_foreign_key "writings", "users"
 end
