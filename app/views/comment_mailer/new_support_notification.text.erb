@@ -1,10 +1,10 @@
 Dear <%= @writing.user.username %>,
 
-This email is to notify you that you have received support on your shared writing titled <%= @writing.title %>.
+This email is to let you know that a new message has been posted on the thread for your shared writing titled <%= @writing.title %>.
 
-Please log-in to the i-Lu platform to approve or decline the support.
+Please log-in to the i-Lu platform to view the new message and continue the discussion.
 
-<%= ENV['frontend_url'] %>/writing/<%= @writing.id %>
+You can access the thread directly from this link <%= ENV['frontend_url'] %>/writing/<%= @writing.id %>
 
 Write. Support. Thrive.
 
