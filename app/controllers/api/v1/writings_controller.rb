@@ -16,6 +16,7 @@ module Api
       def create 
         writing = @current_user.writings.new(writing_params)
         if writing.save 
+          WritingMailer.first_writing_notification(writing).deliver_later if @current_user.writings.length == 1
           render json: { message: 'Writing created successfully' }, status: :ok
         else 
           render json: { errors: writing.errors.messages }, status: :unprocessable_entity
