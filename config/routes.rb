@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       post '/login', to: 'users#login'
       get '/user', to: 'users#show'
       put '/user', to: 'users#update'
+      patch '/user/terms_and_condition', to: 'users#terms_and_condition'
       get '/timeline', to: 'writings#timeline'
       get '/supports', to: 'writings#support'
       post 'password/forgot', to: 'password#forgot'
@@ -16,7 +17,6 @@ Rails.application.routes.draw do
       resources :users, only: [:update, :show] do
         member do
           post 'favorite'
-          patch 'terms_and_condition'
         end
         collection do
           patch 'confirm'
