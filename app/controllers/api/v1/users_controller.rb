@@ -59,11 +59,6 @@ module Api
         end
       end
 
-      def terms_and_condition
-        @current_user.touch(:terms_and_condition)
-        render status: :no_content
-      end
-
       def favorite 
         user = User.find(params[:id])
         @current_user.follow(user)
