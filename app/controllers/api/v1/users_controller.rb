@@ -108,6 +108,7 @@ module Api
                                      :avatar, 
                                      :username,
                                      :education,
+                                     :terms_and_condition,
                                      :gender,
                                      :birth_year,
                                      strengths_attributes: [:id, :name, :selected],
