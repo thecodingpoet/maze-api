@@ -8,4 +8,9 @@ class UserMailer < ApplicationMailer
     @user = user
     mail(:to => "#{user.email}", :subject => "Reset Password")
   end
+
+  def welcome_message(user)
+    @user = user
+    mail(:to => "#{user.email}", :subject => "Welcome to I-LU")
+  end
 end

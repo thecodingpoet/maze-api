@@ -65,6 +65,14 @@ module Api
         render json: favorites, status: :ok
       end
 
+      def terms_and_condition	
+        unless @current_user.terms_and_condition?
+          @current_user.touch(:terms_and_condition)	
+          UserMailer.welcome_message(@current_user).deliver_later
+        end
+        render status: :no_content	
+      end
+
       private
 
       def find_user 

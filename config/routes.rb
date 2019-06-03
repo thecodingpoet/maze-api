@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       get '/user', to: 'users#show'
       put '/user', to: 'users#update'
       patch '/user', to: 'users#update'
+      patch '/terms_and_condition', to: 'users#terms_and_condition'
       get '/timeline', to: 'writings#timeline'
       get '/supports', to: 'writings#support'
       post 'password/forgot', to: 'password#forgot'
