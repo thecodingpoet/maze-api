@@ -10,4 +10,5 @@ class Comment < ApplicationRecord
   scope :declined, -> { where(approved: false) }
   scope :pending_approval, -> { where(approved: nil ) }
   scope :not_declined, -> { pending_approval.or approved }
+  scope :unread, -> { where(read: false) }
 end

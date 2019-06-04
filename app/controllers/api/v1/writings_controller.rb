@@ -57,6 +57,7 @@ module Api
       end
 
       def show 
+        @writing.comments.unread.update_all(read: true) if @writing.user_id == @current_user.id 
         render json: serializer.new(@writing, include: [:user, :comments]), status: :ok
       end
 
