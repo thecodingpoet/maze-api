@@ -9,6 +9,7 @@ module Api
       def create 
         feedback = @current_user.feedback.new(feedback_params)
         if feedback.save 
+          FeedbackMailer.new_feedback_notification(feedback).deliver_later
           render json: { message: 'Feedback created successfully' }, status: :ok
         else 
           render json: { errors: feedback.errors.messages }, status: :unprocessable_entity
