@@ -11,9 +11,10 @@ module Api
       def create 
         comment = @writing.comments.new(comment_params)
         comment.user = @current_user  
-        comment.approved = comment_approved                
+        comment.approved = comment_approved  
+        comment.read = true if user_created_writing?    
         if comment.save 
-          CommentMailer.new_support_notification(@writing).deliver_later unless @writing.user_id == @current_user.id
+          CommentMailer.new_support_notification(@writing).deliver_later unless user_created_writing?
           render json: { message: 'Comment created successfully' }, status: :ok
         else 
           render json: { errors: comment.errors.messages }, status: :unprocessable_entity
@@ -43,7 +44,7 @@ module Api
       private 
 
       def check_user_authored_writing
-        return invalid_authentication unless @writing.user.id == @current_user.id
+        return invalid_authentication unless user_created_writing?
       end
 
       def check_user_authored_comment
@@ -61,6 +62,10 @@ module Api
       def comment_approved
         return true if @writing.user_id == @current_user.id
         writers_first_support.try(:approved)
+      end
+
+      def user_created_writing?
+        @writing.user_id == @current_user.id 
       end
 
       def writers_first_support
