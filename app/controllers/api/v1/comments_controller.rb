@@ -60,7 +60,7 @@ module Api
       end
 
       def comment_approved
-        return true if @writing.user_id == @current_user.id
+        return true if user_created_writing?
         writers_first_support.try(:approved)
       end
 
