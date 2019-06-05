@@ -3,6 +3,7 @@ module Api
     class WritingsController < ApplicationController
       before_action :find_writing, only: [:show, :update_draft, :publish_draft, :archive]
       before_action :check_draft, only: [:update_draft, :publish_draft]
+      after_action :read_comments, only: [:show]
 
       def index
         writings = @current_user.writings.shared_or_archived.page(params[:page])
@@ -57,8 +58,7 @@ module Api
       end
 
       def show 
-        @writing.comments.unread.update_all(read: true) if @writing.user_id == @current_user.id 
-        render json: serializer.new(@writing, include: [:user, :comments]), status: :ok
+        render json: serializer.new(@writing, include: [:user, :comments]), status: :ok 
       end
 
       def drafts
@@ -110,6 +110,10 @@ module Api
 
       def find_writing 
         @writing = Writing.find(params[:id])
+      end
+
+      def read_comments
+        @writing.comments.unread.update_all(read: true) if @writing.user_id == @current_user.id 
       end
 
       def writing_params
