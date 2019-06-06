@@ -58,7 +58,11 @@ module Api
       end
 
       def show 
-        render json: serializer.new(@writing, include: [:user, :comments]), status: :ok 
+        options = {
+          :include => [:user, :comments],
+          :params => { show_read: user_created_writing? }
+        }
+        render json: serializer.new(@writing, options), status: :ok 
       end
 
       def drafts
@@ -113,7 +117,11 @@ module Api
       end
 
       def read_comments
-        @writing.comments.unread.update_all(read: true) if @writing.user_id == @current_user.id 
+        @writing.comments.unread.update_all(read: true) if user_created_writing?
+      end
+
+      def user_created_writing?
+        @writing.user_id == @current_user.id 
       end
 
       def writing_params

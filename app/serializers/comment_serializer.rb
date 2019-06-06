@@ -1,6 +1,10 @@
 class CommentSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :content, :read, :approved, :created_at
+  attributes :content, :approved, :created_at
+
+  attribute :read, if: Proc.new { |record, params|
+    params && params[:show_read] == true
+  }
 
   attributes :user do |comment|
     {
