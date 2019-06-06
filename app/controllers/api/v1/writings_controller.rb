@@ -77,7 +77,7 @@ module Api
                            without_declined_support.
                            uniq
         
-        render json: serializer.new(writings, include: [:user, :comments]), status: :ok
+        render json: serializer.new(writings, include: [:user]), status: :ok
       end
 
       private
