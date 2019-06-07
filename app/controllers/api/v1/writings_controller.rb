@@ -59,8 +59,8 @@ module Api
 
       def show 
         options = {
-          :include => [:user, :comments],
-          :params => { show_read: user_created_writing? }
+          include: [:user, :comments],
+          params: { show_read: user_created_writing? }
         }
         render json: serializer.new(@writing, options), status: :ok 
       end
@@ -129,8 +129,9 @@ module Api
       end
 
       def notify_thread_participants
-        participants = @writing.get_thread_participants.reject { |user| user.id == @current_user.id }
-        participants.each { |user| WritingMailer.thread_closure_notification(@writing, user).deliver_later }
+        @writing.get_thread_participants.
+                 reject { |user| user.id == @current_user.id }.
+                 each { |user| WritingMailer.thread_closure_notification(@writing, user).deliver_later }
       end
     end
   end  

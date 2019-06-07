@@ -85,8 +85,9 @@ module Api
       end
 
       def notify_thread_participants
-        participants = @writing.get_thread_participants.reject { |user| user.id == @current_user.id || user.id == @comment.user_id }
-        participants.each { |user| CommentMailer.new_comment_notification(@writing, user).deliver_later }
+        @writing.get_thread_participants.
+                 reject { |user| user.id == @current_user.id || user.id == @comment.user_id }.
+                 each { |user| CommentMailer.new_comment_notification(@writing, user).deliver_later }
       end
     end
   end  
