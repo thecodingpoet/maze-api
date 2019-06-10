@@ -10,7 +10,7 @@ module Api
       def create
         user = User.new(user_params)
         if user.save
-          UserMailer.signup_confirmation(user).deliver_now
+          UserMailer.signup_confirmation(user).deliver_later
           render json: { message: 'A mail has been sent with link to verify email' }, status: :created
         else
           render json: { errors: user.errors.messages }, status: :bad_request
