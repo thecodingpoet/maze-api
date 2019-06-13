@@ -9,7 +9,7 @@ module Api
         writings = @current_user.writings.shared_or_archived.page(params[:page])
         render json: serializer.new(writings, include: [:user]), status: :ok
       end
-
+ 
       def timeline 
         render json: serializer.new(timeline_writings, include: [:user]), status: :ok
       end
@@ -34,6 +34,7 @@ module Api
 
       def publish_draft
         @writing.status = "shared"
+        @writing.created_at = Time.current
         if @writing.update(writing_params)
           render json: { message: 'Writing has been published' }, status: :ok
         else
