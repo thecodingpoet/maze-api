@@ -56,7 +56,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
 
   # add delivery options
-  config.action_mailer.default_options = {from: 'admin@i-lu.com'}
+  config.action_mailer.default_options = {from: 'admin@Maze.com'}
 
   # SMTP settings for gmail
   config.action_mailer.smtp_settings = {

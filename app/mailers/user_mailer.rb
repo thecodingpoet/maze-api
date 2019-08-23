@@ -1,7 +1,7 @@
 class UserMailer < ApplicationMailer
   def signup_confirmation(user)
     @user = user
-    mail(:to => "#{user.email}", :subject => "Confirm your account on I-LU")
+    mail(:to => "#{user.email}", :subject => "Confirm your account on Maze")
   end
 
   def reset_password(user)
@@ -11,6 +11,6 @@ class UserMailer < ApplicationMailer
 
   def welcome_message(user)
     @user = user
-    mail(:to => "#{user.email}", :subject => "Welcome to I-LU")
+    mail(:to => "#{user.email}", :subject => "Welcome to Maze")
   end
 end
